@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+
+	<script>
+	window.onload = function()
+	{
+		var valorConta = 150;
+		var valorPago = 0;
+		var pessoas = [{nome:'Strehl', valorPago:100}, {nome:'Patricia', valorPago:50}, {nome:'William', valorPago:10}, {nome:'Gabriel', valorPago:0}, {nome:'Bruno', valorPago:0}, {nome:'Kenji', valorPago:0}, {nome:'Kevin', valorPago:0}, {nome:'Mateus', valorPago:0}, {nome:'Philippe', valorPago:0}];
+		var totalPessoas = pessoas.length;
+		var totalContaPorPessoa = valorConta / totalPessoas;
+		var pessoasPagaramAMais = [];
+
+
+		pessoas.map(function(pessoa)
+			{
+				valorPago += pessoa.valorPago;
+			});
+
+		pessoas.forEach(function(pessoa, idPessoa)
+			{
+				if(pessoa.valorPago >= totalContaPorPessoa)
+				{
+					pessoa.valorAMais = pessoa.valorPago - totalContaPorPessoa;
+					pessoasPagaramAMais.push(pessoa);
+					pessoas[idPessoa].deve = 0;
+				}
+				else
+				{
+					pessoas[idPessoa].totalDeve = totalContaPorPessoa - pessoa.valorPago;
+					pessoas[idPessoa].deve = [];
+				}
+			});
+
+		pessoas.forEach(function(pessoa, idPessoa)
+		{
+
+			if(typeof pessoa.deve == 'object')
+			{
+				var porcentagemDaConta = 1-(1-(pessoa.valorPago/totalContaPorPessoa));
+				// console.log(pessoas[k]);
+				pessoasPagaramAMais.forEach(function(pessoaPagouAMais, idPessoaPagouAMai)
+				{					
+					pessoas[idPessoa].deve.push({nome:pessoaPagouAMais.nome, valor:pessoa.totalDeve * (pessoaPagouAMais.valorPago/valorConta)});
+				});
+			}
+		});
+		// console.log(pessoasPagaramAMais);
+		console.log(pessoas);
+	}
+	</script>
+	
+</body>
+</html>
